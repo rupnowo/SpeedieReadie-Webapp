@@ -1,18 +1,8 @@
-import React from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { signOut, getAuth } from 'firebase/auth';
+import { Navbar, Nav } from 'react-bootstrap';
 
 
 
 const NavBar = () => {
-  async function handleSignOut() {
-    try {
-      await signOut(getAuth());
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/">Speedie Readie</Navbar.Brand>
