@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import TextInput from '../components/TextInput';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,8 +11,7 @@ const Register: React.FC = () => {
   async function handleRegister(event: React.FormEvent) {
     event.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
-      .then ((userCredential) => {
-        const user = userCredential.user;
+      .then (() => {
         navigate('/login');
       })
       .catch((error) => {
