@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import TextInput from '../components/TextInput';
-import Button from '../components/Button';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,9 +12,8 @@ const Login: React.FC = () => {
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then ((userCredential) => {
-        const user = userCredential.user;
-        navigate('/Library');
+      .then (() => {
+        navigate('/library');
       })
       .catch((error) => {
         const errorCode = error.code;
