@@ -1,9 +1,20 @@
-# ignore virtual env
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+db.sqlite3
 .venv/
+venv/
 
-# ignore json admin file
-speedreading-webapp-firebase-adminsdk-p4peq-6464db7e2a.json
-
-# enviroment variables
+# Environment variables (never commit real secrets)
 .env
-node_modules
+.env.*
+!.env.example
+
+# Firebase service-account key files
+speedreading-webapp-firebase-adminsdk-p4peq-6464db7e2a.json
+*-firebase-adminsdk-*.json
+
+# Node
+node_modules/
+dist/
