@@ -2,7 +2,6 @@ from decouple import config
 from pathlib import Path
 import firebase_admin
 from firebase_admin import credentials, firestore
-import requests
 from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,14 +130,3 @@ firebase_admin.initialize_app(cred)
 
 FIRESTORE_DB = firestore.client()
 
-
-
-# Function to get public keys from Google's endpoint
-def get_firebase_public_keys():
-    url = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.json()
-
-# Fetch the public keys
-firebase_public_keys = get_firebase_public_keys()
