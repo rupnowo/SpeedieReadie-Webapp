@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Library from './pages/Library';
 import AddText from './pages/AddText';
@@ -11,7 +11,7 @@ import NavBar from './components/NavBar';
 import firebaseConfig from './config/firebaseConfig';
 import { initializeApp } from 'firebase/app';
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 
 const App: React.FC = () => {
