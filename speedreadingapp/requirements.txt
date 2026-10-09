@@ -1,0 +1,11 @@
+# Backend dependencies for SpeedieReadie (Django)
+django
+djangorestframework
+django-cors-headers
+firebase-admin
+python-decouple
+requests
+beautifulsoup4
+ebooklib
+PyPDF2
+chardet
