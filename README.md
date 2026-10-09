@@ -1,112 +1,166 @@
 # SpeedieReadie
 
-SpeedieReadie is a speed reading web application built with **ReactJS** (using TypeScript) for the frontend, **Django** as the backend, and **Firebase Firestore** for the database. This app allows users to upload and read texts at their own customized speed, helping them improve their reading pace. 
+SpeedieReadie is a speed reading web application built with **React + TypeScript (Vite)** for the frontend, **Django + Django REST Framework** for the backend, and **Firebase** (Authentication on the client, Firestore as the database). Upload texts — or import them from files, EPUB/PDF documents, or URLs — and read them back at your own customized speed.
 
-### ⚠️ **Important Note**
-I am no longer actively working on this project. The only branch that is known to be fully functional is the **`NoAuthSpeedieReadie`** branch. Please note that there is **no official license** associated with this project.
+> **Note:** This project is no longer under active development. `main` is the working branch.
 
 ---
 
 ## Table of Contents
+
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Visuals](#visuals)
-- [Dependencies](#dependencies)
+- [Project Structure](#project-structure)
+- [Known Limitations](#known-limitations)
+- [Demo](#demo)
 - [Contributing](#contributing)
 - [License](#license)
 
 ---
 
 ## Features
-- Upload and view texts in the speed reading format.
-- Customize the speed and reading settings to suit individual preferences.
-- **No Authentication** required in the **`NoAuthSpeedieReadie`** branch (for quick testing and use).
+
+- Upload and view texts in a speed-reading format
+- Customize the reading speed and settings
+- Import from plain text, PDF, EPUB, or a URL
+- Personal library stored per user in Firestore
+- Firebase Authentication on the frontend
 
 ---
 
-## **Tech Stack**
+## Tech Stack
 
-- **Frontend**: ReactJS, TypeScript
-- **Backend**: Django, Django Rest Framework
-- **Database**: Firebase Firestore
+- **Frontend:** React 18, TypeScript, Vite, React Router, Axios, Firebase JS SDK, Bootstrap
+- **Backend:** Django, Django REST Framework, django-cors-headers
+- **Database:** Firebase Firestore (via the Firebase Admin SDK)
+- **Dev database:** SQLite (local only — `db.sqlite3` is git-ignored, never commit it)
 
 ---
 
-## **Installation**
+## Prerequisites
 
-To set up and run SpeedieReadie on your local machine:
+- Python 3.10+
+- Node.js 18+ and npm
+- A Firebase project with:
+  - Firestore Database enabled
+  - Email/Password sign-in enabled under **Authentication**
+  - A **service account key** JSON for the backend — Firebase Console → Project Settings → Service accounts → Generate new private key
+  - A **web app config** for the frontend — Firebase Console → Project Settings → Your apps
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/SpeedieReadie.git
-2. **Set up Backend**
-   - Navigate to the Django backend Directory:
-    ```bash
-    cd backend/
-  - Install the required Python Dependencies:
-    ```bash
-    pip install -r requirements.txt
-  - Run the Server:
-    ```bash
-    python manage.py runserver
-3. **Set up the Frontend**
-   - Navigate to the React project directory:
-    ```bash
-   cd frontend/
-  - Install the required Node.js denpendencies:
-    ```bash
-    npm install
-  - Run the development server:
-    ```bash
-    npm run dev
-    ```
-    ---
+---
 
-    ## **Visuals**
+## Installation
 
-    Here are some screenshots and a link to the full 3 minute demo on Youtube!
-    ### **SpeedieReadie HomePage**
-      ![SpeedieReadie ScreenShot](https://github.com/Juno-whut/SpeedieReadie-Webapp/blob/NoAuthSpeedieReadie/READMEimages/speediereadieHOME.png?raw=true)
-    ### **SpeedieReadie Library**
-      ![SpeedieReadie ScreenShot](https://github.com/Juno-whut/SpeedieReadie-Webapp/blob/NoAuthSpeedieReadie/READMEimages/speediereadieLIBRARY.png?raw=true)
-    ### **SpeedieReadie EditPage**
-      ![SpeedieReadie ScreenShot](https://github.com/Juno-whut/SpeedieReadie-Webapp/blob/NoAuthSpeedieReadie/READMEimages/speediereadieEDITTEXT.png?raw=true)
-    ### **SpeedieReadie Speed Reading Page**
-       ![SpeedieReadie ScreenShot](https://github.com/Juno-whut/SpeedieReadie-Webapp/blob/NoAuthSpeedieReadie/READMEimages/speediereadieSPEEDREADING.png?raw=true)
-    ### **Watch the Full Demo on YT**
-    [![Watch on Youtube]((https://github.com/Juno-whut/SpeedieReadie-Webapp/blob/NoAuthSpeedieReadie/READMEimages/speediereadieHOME.png?raw=true)](https://www.youtube.com/watch?v=h5C-h2_8SuQ)
-    
-    ---
+### 1. Clone the repository
 
-    ## **Dependencies**
-    
-    ### **Python Dependencies** (Backend):
-    - Django
-    - Firebase
-    - requests
-    - re
-    - charder
-    - eboolib
-    - tempfile
-    - PyPDF2
-    - BeautifulSoup4
-    - django_rest_framework
-    - firebase_admin
+```bash
+git clone https://github.com/rupnowo/SpeedieReadie-Webapp.git
+cd SpeedieReadie-Webapp
+```
 
-    ### **ReactJS Dependencies** (Frontend):
-    - ReactJS
-    - Firebase
-    - Bootstrap
-    - Vite
+### 2. Backend setup (Django)
 
-    ---
+```bash
+cd speedreadingapp
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-    ## **Contributing**
-    This projecet is currently **not** accepting contributions, as development is no longer active. Feel free to fork the repository if you'd like to use or modify it for your own purposes.
+Create `speedreadingapp/.env` (see `.env.example` — never commit the real `.env`):
 
-    ---
+```
+SECRET_KEY=<a-random-secret-key>
+FIREBASE_CERT_PATH=/absolute/path/to/your-firebase-adminsdk.json
+```
 
-    ## **License**
-    This project has **no license**. Feel free to use it, but please be aware that there is no formal license governing the code.
-    
+Generate a secret key with:
+
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+Create the local database and start the server:
+
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+
+The API will be available at `http://localhost:8000/api/`. The backend initializes the Firebase Admin SDK at startup, so it needs your service-account key and network access to Google.
+
+### 3. Frontend setup (React + Vite)
+
+```bash
+cd speedreadingapp/frontend
+npm install
+```
+
+Create `speedreadingapp/frontend/.env` (see `.env.example` — never commit the real `.env`):
+
+```
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+Start the dev server:
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`. The Vite dev server proxies `/api` requests to the Django backend at `http://localhost:8000`.
+
+---
+
+## Project Structure
+
+```
+speedreadingapp/
+├── manage.py
+├── requirements.txt
+├── .env.example
+├── speedreadingapp/      # Django project package (settings, urls)
+├── users/                # user profiles & auth API
+├── UserLibrary/          # library / import / speed-read API (Firestore-backed)
+├── api/                  # legacy endpoints (not wired into urls)
+└── frontend/             # React + TypeScript Vite app
+    ├── .env.example
+    └── src/
+        ├── api.ts            # backend API client
+        ├── config/           # Firebase + axios configuration
+        ├── pages/            # HomePage, Library, AddText, Login, ...
+        └── components/
+```
+
+---
+
+## Known Limitations
+
+- Some frontend API paths in `src/api.ts` don't match the backend routes yet (library list, add-text, and delete call different paths than the backend serves); import-from-file and import-from-url line up end to end.
+- The Django `LoginView` is an unimplemented stub — the frontend logs in through Firebase Authentication directly.
+- An older `NoAuthSpeedieReadie` branch referenced in earlier docs no longer exists; `main` is the only branch.
+
+---
+
+## Demo
+
+A 3-minute demo of an earlier version: https://www.youtube.com/watch?v=h5C-h2_8SuQ
+
+---
+
+## Contributing
+
+This project is currently **not** accepting contributions, as development is no longer active. Feel free to fork it for your own use.
+
+---
+
+## License
+
+This project is licensed under the MIT License — see [LICENSE](LICENSE).
